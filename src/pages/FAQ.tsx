@@ -1,68 +1,56 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, ArrowRight } from 'lucide-react';
+import { ChevronDown, ArrowRight } from 'lucide-react';
 
-interface Props { onNavigate: (p: any) => void; }
+interface Props { onNavigate: (p: string) => void; }
 
 const FAQS = [
-  { q: 'Who can apply?', a: 'Cambridge ETA Matching is open to members of the broader ETA community, including students, alumni, searchers, operators, investors, advisors, and ETA-adjacent professionals. You do not need to be a Cambridge student or alumni to apply.' },
-  { q: 'Is this only for Cambridge students and alumni?', a: 'No. Cambridge ETA Club hosts the program, but it is designed to serve the wider ETA community. We welcome applications from anyone seriously engaged in entrepreneurship through acquisition.' },
-  { q: 'What kinds of opportunities are included?', a: 'Partner matching (search partners, collaborators, operators, advisors), internship matching (search fund internships, deal sourcing roles, portfolio operations, ETA ecosystem roles), and opportunity submissions from firms looking to recruit ETA talent.' },
-  { q: 'Do you guarantee a match?', a: 'No. All applications are reviewed, but submission does not guarantee a match or placement. We prioritise quality and relevance over volume.' },
-  { q: 'Can firms recruit through the community?', a: 'Yes. Searchers, investors, operators, acquired companies, and ETA-related firms can submit talent needs or internship opportunities through our Submit Opportunity form.' },
-  { q: 'Is there a cost to apply?', a: 'Currently, there is no cost to apply to any of the matching programs.' },
-  { q: 'How long does the review process take?', a: 'We aim to review applications within 5–10 working days. If your application is a strong fit, you will hear from us via email with next steps or an introduction.' },
-  { q: 'What information do I need to provide?', a: 'All applicants need to provide their name, email, role, and background. Internship candidates must upload a CV (cover letter optional). Firms submitting opportunities must provide their company website and role details.' },
-  { q: 'Is my information kept confidential?', a: 'Yes. Your application details are shared only with potential matches and the Cambridge ETA team. We never publish or distribute your information externally.' },
-  { q: 'Can I apply to more than one program?', a: 'Yes. You can apply for partner matching, internship matching, and submit opportunities separately.' },
-  { q: 'What if I do not hear back?', a: 'If your application is not a match at this time, you may not receive a response. You are welcome to reapply in the future or reach out to team@etacambridge.co.uk with questions.' },
-  { q: 'How do I contact the team?', a: 'Email us at team@etacambridge.co.uk for any questions about the matching program.' },
+  { q: 'What is ETA Connections?', a: 'ETA Connections is a curated matching platform for the entrepreneurship through acquisition (ETA) ecosystem. We connect searchers, investors, operators, advisors, and talent through nine specialised programs. Built in partnership with Cambridge ETA Club at Cambridge Judge Business School.' },
+  { q: 'Is it free to apply?', a: 'Yes, all matching programs are completely free to apply to. We do not charge fees for introductions.' },
+  { q: 'How is this different from a job board or marketplace?', a: 'We are not a marketplace. Every application is manually reviewed, and introductions are curated based on fit, alignment, and complementary skills. We prioritise quality over quantity.' },
+  { q: 'Who reviews applications?', a: 'Applications are reviewed by the ETA Connections team in partnership with Cambridge ETA Club. Our reviewers have experience across search funds, acquisitions, investing, and operations.' },
+  { q: 'How long does it take to get matched?', a: 'It depends on the program and the volume of applications. Typically, you will hear from us within 2-4 weeks of submitting your application. Some matches happen faster when there is clear alignment.' },
+  { q: 'What happens after I get introduced?', a: 'After we facilitate a warm introduction, the relationship is yours to develop. We check in periodically to see how things are going and offer support if needed.' },
+  { q: 'Is my information confidential?', a: 'Absolutely. Your application details are shared only with potential matches, and only after we have identified a strong fit. We never share your information publicly or with third parties.' },
+  { q: 'Can I apply to multiple programs?', a: 'Yes. You can submit applications to as many programs as are relevant to you. Each application is reviewed independently.' },
+  { q: 'What is Cambridge ETA Club?', a: 'Cambridge ETA Club is a student-run organisation at Cambridge Judge Business School focused on entrepreneurship through acquisition. The club organises events, connects the ETA community, and now partners with ETA Connections to facilitate curated matching.' },
+  { q: 'I am not based in the UK. Can I still apply?', a: 'Absolutely. ETA Connections serves the global ETA community. While we have strong roots in Cambridge, our matching programs are open to applicants worldwide.' },
 ];
 
 export default function FAQ({ onNavigate }: Props) {
-  const [open, setOpen] = useState<number | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
 
   return (
-    <div>
-      <section style={{ background: '#fff', padding: '64px 16px' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <p className="label" style={{ marginBottom: 8 }}>Common Questions</p>
-          <h1 className="font-serif" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: 'var(--navy)', marginBottom: 8 }}>Frequently asked questions</h1>
-          <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 40 }}>
-            Everything you need to know about Cambridge ETA Matching.
-          </p>
+    <div style={{ maxWidth: 800, margin: '0 auto', padding: '60px 20px' }}>
+      <p className="label" style={{ marginBottom: 12, color: 'var(--blue)' }}>FAQ</p>
+      <h1 className="font-serif" style={{ fontSize: 36, fontWeight: 700, marginBottom: 12 }}>Frequently asked questions</h1>
+      <p style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 40 }}>
+        Everything you need to know about ETA Connections and our matching programs.
+      </p>
 
-          <div>
-            {FAQS.map((faq, i) => (
-              <div key={i} style={{ borderBottom: '1px solid var(--border)' }}>
-                <button onClick={() => setOpen(open === i ? null : i)}
-                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 0', background: 'none', border: 'none', cursor: 'pointer', gap: 16, textAlign: 'left' }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--navy)' }}>{faq.q}</span>
-                  {open === i ? <ChevronUp size={16} style={{ color: 'var(--muted)', flexShrink: 0 }} /> : <ChevronDown size={16} style={{ color: 'var(--muted)', flexShrink: 0 }} />}
-                </button>
-                {open === i && (
-                  <div style={{ paddingBottom: 18 }}>
-                    <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.7 }}>{faq.a}</p>
-                  </div>
-                )}
+      <div>
+        {FAQS.map((faq, i) => (
+          <div key={i} style={{ borderBottom: '1px solid var(--border)' }}>
+            <button onClick={() => setOpenIdx(openIdx === i ? null : i)} className="btn-ghost"
+              style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 0', textAlign: 'left' }}>
+              <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text)', flex: 1, paddingRight: 16 }}>{faq.q}</span>
+              <ChevronDown size={16} style={{ color: 'var(--muted)', transform: openIdx === i ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s', flexShrink: 0 }} />
+            </button>
+            {openIdx === i && (
+              <div style={{ paddingBottom: 20 }}>
+                <p style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.7 }}>{faq.a}</p>
               </div>
-            ))}
+            )}
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
 
-      {/* Still have questions */}
-      <section style={{ background: 'var(--cream)', padding: '64px 16px' }}>
-        <div style={{ maxWidth: 560, margin: '0 auto', textAlign: 'center' }}>
-          <h2 className="font-serif" style={{ fontSize: 24, fontWeight: 700, color: 'var(--navy)', marginBottom: 8 }}>Still have questions?</h2>
-          <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 24 }}>
-            Reach out to the team at <a href="mailto:team@etacambridge.co.uk" style={{ color: 'var(--gold)', fontWeight: 700, textDecoration: 'none' }}>team@etacambridge.co.uk</a>
-          </p>
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button onClick={() => onNavigate('apply-partner')} className="btn-primary">Apply Now <ArrowRight size={14} /></button>
-            <button onClick={() => onNavigate('home')} className="btn-secondary">Back to Home</button>
-          </div>
-        </div>
-      </section>
+      <div style={{ marginTop: 48, padding: 32, background: 'var(--surface-2)', border: '1px solid var(--border)', textAlign: 'center' }}>
+        <h3 className="font-serif" style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Still have questions?</h3>
+        <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 16, lineHeight: 1.6 }}>
+          Reach out to us at <a href="mailto:team@etacambridge.co.uk" style={{ color: 'var(--blue)', textDecoration: 'none' }}>team@etacambridge.co.uk</a>
+        </p>
+        <button onClick={() => onNavigate('home')} className="btn-primary">View Programs <ArrowRight size={14} /></button>
+      </div>
     </div>
   );
 }

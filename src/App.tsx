@@ -5,6 +5,7 @@ import Landing from './pages/Landing';
 import Apply from './pages/Apply';
 import HowItWorks from './pages/HowItWorks';
 import FAQ from './pages/FAQ';
+import Admin from './pages/Admin';
 import { PROGRAMS } from './lib/programs';
 
 export default function App() {
@@ -13,32 +14,39 @@ export default function App() {
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
     if (hash) setPage(hash);
+    const onHash = () => {
+      const h = window.location.hash.replace('#', '');
+      if (h) setPage(h);
+    };
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  useEffect(() => {
+  const navigate = (p: string) => {
+    setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    window.location.hash = page === 'home' ? '' : page;
-  }, [page]);
+    window.location.hash = p === 'home' ? '' : p;
+  };
 
   const render = () => {
-    if (page === 'how-it-works') return <HowItWorks onNavigate={setPage} />;
-    if (page === 'faq') return <FAQ onNavigate={setPage} />;
+    if (page === 'how-it-works') return <HowItWorks onNavigate={navigate} />;
+    if (page === 'faq') return <FAQ onNavigate={navigate} />;
+    if (page === 'admin') return <Admin onNavigate={navigate} />;
 
-    // Check if it's an apply page
     if (page.startsWith('apply-')) {
       const programId = page.replace('apply-', '');
       const program = PROGRAMS.find(p => p.id === programId);
-      if (program) return <Apply programId={programId} onNavigate={setPage} />;
+      if (program) return <Apply programId={programId} onNavigate={navigate} />;
     }
 
-    return <Landing onNavigate={setPage} />;
+    return <Landing onNavigate={navigate} />;
   };
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Header currentPage={page} onNavigate={setPage} />
+      <Header currentPage={page} onNavigate={navigate} />
       <main style={{ flex: 1 }}>{render()}</main>
-      <Footer onNavigate={setPage} />
+      <Footer onNavigate={navigate} />
     </div>
   );
 }
