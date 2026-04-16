@@ -2,23 +2,17 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Landing from './pages/Landing';
-import ApplyPartner from './pages/ApplyPartner';
-import ApplyInternship from './pages/ApplyInternship';
-import SubmitOpportunity from './pages/SubmitOpportunity';
+import Apply from './pages/Apply';
 import HowItWorks from './pages/HowItWorks';
 import FAQ from './pages/FAQ';
-
-type Page = 'home' | 'apply-partner' | 'apply-internship' | 'submit-opportunity' | 'how-it-works' | 'faq';
+import { PROGRAMS } from './lib/programs';
 
 export default function App() {
-  const [page, setPage] = useState<Page>('home');
+  const [page, setPage] = useState('home');
 
   useEffect(() => {
-    // Handle hash-based routing from external links
-    const hash = window.location.hash.replace('#', '') as Page;
-    if (['apply-partner', 'apply-internship', 'submit-opportunity', 'how-it-works', 'faq'].includes(hash)) {
-      setPage(hash);
-    }
+    const hash = window.location.hash.replace('#', '');
+    if (hash) setPage(hash);
   }, []);
 
   useEffect(() => {
@@ -27,14 +21,17 @@ export default function App() {
   }, [page]);
 
   const render = () => {
-    switch (page) {
-      case 'apply-partner': return <ApplyPartner onNavigate={setPage} />;
-      case 'apply-internship': return <ApplyInternship onNavigate={setPage} />;
-      case 'submit-opportunity': return <SubmitOpportunity onNavigate={setPage} />;
-      case 'how-it-works': return <HowItWorks onNavigate={setPage} />;
-      case 'faq': return <FAQ onNavigate={setPage} />;
-      default: return <Landing onNavigate={setPage} />;
+    if (page === 'how-it-works') return <HowItWorks onNavigate={setPage} />;
+    if (page === 'faq') return <FAQ onNavigate={setPage} />;
+
+    // Check if it's an apply page
+    if (page.startsWith('apply-')) {
+      const programId = page.replace('apply-', '');
+      const program = PROGRAMS.find(p => p.id === programId);
+      if (program) return <Apply programId={programId} onNavigate={setPage} />;
     }
+
+    return <Landing onNavigate={setPage} />;
   };
 
   return (

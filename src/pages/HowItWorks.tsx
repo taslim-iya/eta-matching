@@ -1,4 +1,7 @@
-import { ArrowRight, Handshake, GraduationCap, Building2 } from 'lucide-react';
+import { ArrowRight, Handshake, TrendingUp, Compass, Settings, GraduationCap, Users, Briefcase, Scale, Building2 } from 'lucide-react';
+import { PROGRAMS } from '../lib/programs';
+
+const ICONS: Record<string, any> = { Handshake, TrendingUp, Compass, Settings, GraduationCap, Users, Briefcase, Scale, Building2 };
 
 interface Props { onNavigate: (p: any) => void; }
 
@@ -10,78 +13,39 @@ export default function HowItWorks({ onNavigate }: Props) {
           <p className="label" style={{ marginBottom: 8 }}>Process</p>
           <h1 className="font-serif" style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 700, color: 'var(--navy)', marginBottom: 12 }}>How it works</h1>
           <p style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.6, maxWidth: 560, marginBottom: 48 }}>
-            Cambridge ETA Matching is a curated program, not an open directory. Here is how the process works for each program.
+            Cambridge ETA Matching is a curated program. Here is how the process works for each matching program.
           </p>
 
-          {/* Partner Matching Process */}
-          <div style={{ marginBottom: 56, paddingBottom: 56, borderBottom: '1px solid var(--border)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-              <Handshake size={20} style={{ color: 'var(--navy)' }} />
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--navy)' }}>Partner Matching</h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
-              {[
-                { step: '01', title: 'Apply', desc: 'Submit your background, experience, ETA interest, and what you are looking for in a search partner, collaborator, or teammate. Include your LinkedIn profile and any relevant context.' },
-                { step: '02', title: 'We review your profile', desc: 'The Cambridge ETA team reviews every submission for seriousness, relevance, and alignment with the ETA community. We are looking for genuine intent and clear goals.' },
-                { step: '03', title: 'Curated introductions', desc: 'Where there is a strong potential fit between applicants, we facilitate introductions. You will receive an email with details about your match and suggested next steps.' },
-              ].map(s => (
-                <div key={s.step} style={{ padding: 24, background: 'var(--cream)' }}>
-                  <span style={{ fontSize: 11, fontWeight: 900, color: 'var(--gold)', display: 'block', marginBottom: 8 }}>{s.step}</span>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>{s.title}</h3>
-                  <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6 }}>{s.desc}</p>
+          {PROGRAMS.map((p, idx) => {
+            const Icon = ICONS[p.icon] || Users;
+            return (
+              <div key={p.id} style={{ marginBottom: 48, paddingBottom: 48, borderBottom: idx < PROGRAMS.length - 1 ? '1px solid var(--border)' : 'none' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+                  <div style={{ width: 36, height: 36, background: p.bg, borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon size={18} style={{ color: p.color }} />
+                  </div>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--navy)' }}>{p.label}</h2>
                 </div>
-              ))}
-            </div>
-            <button onClick={() => onNavigate('apply-partner')} className="btn-primary" style={{ marginTop: 20 }}>Apply for Partner Matching <ArrowRight size={14} /></button>
-          </div>
-
-          {/* Internship Matching Process */}
-          <div style={{ marginBottom: 56, paddingBottom: 56, borderBottom: '1px solid var(--border)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-              <GraduationCap size={20} style={{ color: 'var(--navy)' }} />
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--navy)' }}>Internship Matching</h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
-              {[
-                { step: '01', title: 'Candidates apply or firms submit roles', desc: 'Students and early-career professionals submit their CV, background, and preferred role types. Firms and searchers submit available internship and project opportunities.' },
-                { step: '02', title: 'We review for fit', desc: 'The team reviews both candidate applications and submitted opportunities. We assess for relevance, quality, and potential alignment between candidates and roles.' },
-                { step: '03', title: 'We connect relevant people', desc: 'Where there is strong alignment between a candidate and an opportunity, we facilitate a direct introduction. Both parties receive details and context to help the conversation start productively.' },
-              ].map(s => (
-                <div key={s.step} style={{ padding: 24, background: 'var(--cream)' }}>
-                  <span style={{ fontSize: 11, fontWeight: 900, color: 'var(--gold)', display: 'block', marginBottom: 8 }}>{s.step}</span>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>{s.title}</h3>
-                  <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6 }}>{s.desc}</p>
+                <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 20, maxWidth: 600 }}>{p.longDescription}</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+                  {p.steps.map((s, si) => (
+                    <div key={si} style={{ padding: 20, background: 'var(--cream)' }}>
+                      <span style={{ fontSize: 11, fontWeight: 900, color: p.color }}>{String(si + 1).padStart(2, '0')}</span>
+                      <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--navy)', margin: '6px 0 4px' }}>{s.title}</h3>
+                      <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>{s.desc}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-            <button onClick={() => onNavigate('apply-internship')} className="btn-primary" style={{ marginTop: 20 }}>Apply for Internship Matching <ArrowRight size={14} /></button>
-          </div>
-
-          {/* Submitting Opportunities */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
-              <Building2 size={20} style={{ color: 'var(--navy)' }} />
-              <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--navy)' }}>Submitting Opportunities</h2>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 24 }}>
-              {[
-                { step: '01', title: 'Submit your opportunity', desc: 'Provide details about your company, the role or project, and what you are looking for in a candidate. Include your website and any relevant links.' },
-                { step: '02', title: 'We review and qualify', desc: 'The team reviews submitted opportunities for legitimacy, relevance to the ETA community, and overall quality. We may reach out for additional details.' },
-                { step: '03', title: 'Matched with candidates', desc: 'Qualified opportunities are matched with relevant candidates from the matching pool. Both parties are introduced with full context.' },
-              ].map(s => (
-                <div key={s.step} style={{ padding: 24, background: 'var(--cream)' }}>
-                  <span style={{ fontSize: 11, fontWeight: 900, color: 'var(--gold)', display: 'block', marginBottom: 8 }}>{s.step}</span>
-                  <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy)', marginBottom: 6 }}>{s.title}</h3>
-                  <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6 }}>{s.desc}</p>
-                </div>
-              ))}
-            </div>
-            <button onClick={() => onNavigate('submit-opportunity')} className="btn-primary" style={{ marginTop: 20 }}>Submit an Opportunity <ArrowRight size={14} /></button>
-          </div>
+                <button onClick={() => onNavigate(`apply-${p.id}`)} className="btn-primary" style={{ marginTop: 16, fontSize: 13 }}>
+                  {p.ctaLabel} <ArrowRight size={13} />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Timeline / What to expect */}
+      {/* What to expect */}
       <section style={{ background: 'var(--cream)', padding: '64px 16px' }}>
         <div style={{ maxWidth: 640, margin: '0 auto' }}>
           <h2 className="font-serif" style={{ fontSize: 24, fontWeight: 700, color: 'var(--navy)', marginBottom: 24 }}>What to expect</h2>
