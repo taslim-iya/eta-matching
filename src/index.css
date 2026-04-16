@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --navy: #1A1819;
+  --navy-mid: #2a2829;
+  --cream: #f7f2e4;
+  --gold: #C4A35A;
+  --gold-light: #d4b76a;
+  --muted: #8a8580;
+  --border: #e6e0d0;
+  --bg: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif { font-family: 'Playfair Display', Georgia, serif; }
+.font-sans { font-family: 'Inter', -apple-system, sans-serif; }
+
+.btn-primary {
+  background: var(--navy);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--navy-mid); }
+
+.btn-secondary {
+  border: 2px solid var(--navy);
+  color: var(--navy);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 10px 24px;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { background: var(--navy); color: #fff; }
+
+.label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  border: 2px solid var(--border);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--navy);
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus { border-color: var(--navy); }
+.input::placeholder { color: var(--muted); }
+
+select.input { background: #fff; appearance: none; }
+textarea.input { resize: none; }
+
+.card {
+  border: 2px solid var(--border);
+  padding: 32px;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--navy); }
