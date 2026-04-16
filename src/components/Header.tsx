@@ -46,7 +46,6 @@ export default function Header({ currentPage, onNavigate }: Props) {
 
           <NavBtn label="How It Works" active={currentPage === 'how-it-works'} onClick={() => onNavigate('how-it-works')} />
           <NavBtn label="FAQ" active={currentPage === 'faq'} onClick={() => onNavigate('faq')} />
-          <NavBtn label="Admin" active={currentPage === 'admin'} onClick={() => onNavigate('admin')} />
         </nav>
 
         {/* Mobile menu */}
@@ -63,7 +62,7 @@ export default function Header({ currentPage, onNavigate }: Props) {
             ...programs.map(p => ({ id: 'apply-' + p.id, l: p.shortLabel })),
             { id: 'how-it-works', l: 'How It Works' },
             { id: 'faq', l: 'FAQ' },
-            { id: 'admin', l: 'Admin' },
+
           ].map(n => (
             <button key={n.id} onClick={() => { onNavigate(n.id); setOpen(false); }} className="btn-ghost"
               style={{ display: 'block', width: '100%', textAlign: 'left', padding: '10px 0', fontSize: 14, fontWeight: currentPage === n.id ? 700 : 500, color: currentPage === n.id ? 'var(--blue)' : 'var(--text)', borderBottom: '1px solid var(--border)' }}>

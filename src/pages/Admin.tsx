@@ -27,13 +27,29 @@ interface Application {
   submittedAt?: string;
 }
 
+const ADMIN_PASSWORD = 'etaconnections2026';
+
 interface Props { onNavigate: (p: string) => void; }
 
 export default function Admin({ onNavigate }: Props) {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem('eta-admin-auth') === 'true');
+  const [pw, setPw] = useState('');
+  const [pwError, setPwError] = useState(false);
   const [apps, setApps] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<Application | null>(null);
   const [filterType, setFilterType] = useState('all');
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (pw === ADMIN_PASSWORD) {
+      setAuthed(true);
+      sessionStorage.setItem('eta-admin-auth', 'true');
+      setPwError(false);
+    } else {
+      setPwError(true);
+    }
+  };
 
   const load = async () => {
     setLoading(true);
@@ -42,7 +58,32 @@ export default function Admin({ onNavigate }: Props) {
     setLoading(false);
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => { if (authed) load(); }, [authed]);
+
+  if (!authed) {
+    return (
+      <div style={{ maxWidth: 400, margin: '0 auto', padding: '120px 20px', textAlign: 'center' }}>
+        <div style={{ width: 48, height: 48, background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+          <span style={{ fontWeight: 900, fontSize: 12, color: '#fff' }}>ETA</span>
+        </div>
+        <h2 className="font-serif" style={{ fontSize: 24, marginBottom: 8 }}>Admin Access</h2>
+        <p style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 28 }}>Enter the admin password to view applications.</p>
+        <form onSubmit={handleLogin}>
+          <input
+            className="input"
+            type="password"
+            value={pw}
+            onChange={e => { setPw(e.target.value); setPwError(false); }}
+            placeholder="Password"
+            style={{ marginBottom: 12, textAlign: 'center', borderColor: pwError ? 'var(--danger)' : undefined }}
+            autoFocus
+          />
+          {pwError && <p style={{ fontSize: 13, color: 'var(--danger)', marginBottom: 12 }}>Incorrect password.</p>}
+          <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Sign In</button>
+        </form>
+      </div>
+    );
+  }
 
   const filtered = filterType === 'all' ? apps : apps.filter(a => a.type === filterType);
   const programName = (id: string) => PROGRAMS.find(p => p.id === id)?.shortLabel || id;
